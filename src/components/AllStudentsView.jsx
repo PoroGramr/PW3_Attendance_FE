@@ -9,7 +9,11 @@ const AllStudentsView = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showExportModal, setShowExportModal] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const now = new Date();
+    const koreaTime = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+    return koreaTime.toISOString().split('T')[0];
+  });
 
   // 출석 상태 매핑
   const attendanceStatusMap = {
@@ -120,8 +124,30 @@ const AllStudentsView = () => {
       return groups;
     }, {});
 
-    // 텍스트 형식으로 변환
-    const exportText = Object.entries(classGroups)
+    // 반 이름 파싱 함수
+    const parseClassName = (className) => {
+      const match = className.match(/(중|고)(\d+)-(\d+)/);
+      if (!match) return ["", 0, 0];
+      return [match[1], parseInt(match[2]), parseInt(match[3])];
+    };
+
+    // 반 정렬 함수
+    const sortClasses = (a, b) => {
+      const [aType, aGrade, aClass] = parseClassName(a);
+      const [bType, bGrade, bClass] = parseClassName(b);
+
+      if (aType !== bType) {
+        return aType === '중' ? -1 : 1;
+      }
+      if (aGrade !== bGrade) {
+        return aGrade - bGrade;
+      }
+      return aClass - bClass;
+    };
+
+    // 정렬된 반 목록 생성
+    const sortedClassGroups = Object.entries(classGroups)
+      .sort(([a], [b]) => sortClasses(a, b))
       .map(([className, studentNames]) => `${className}: ${studentNames.join(', ')}`)
       .join('\n\n');
 
@@ -130,7 +156,7 @@ const AllStudentsView = () => {
         <div className="modal-content" onClick={e => e.stopPropagation()}>
           <h2>출석부 내보내기 ({selectedDate})</h2>
           <div className="export-content">
-            <pre className="export-text">{exportText}</pre>
+            <pre className="export-text">{sortedClassGroups}</pre>
           </div>
           <div className="modal-actions">
             <button className="btn-close" onClick={() => setShowExportModal(false)}>
