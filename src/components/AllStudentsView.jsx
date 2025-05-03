@@ -56,14 +56,32 @@ const AllStudentsView = () => {
         // 반 목록 가져오기
         const classData = await apiRequest(API_ENDPOINTS.students.getAll);
         
+        // 중학교와 고등학교 분리
+        const middleClasses = classData.filter(cls => cls.schoolType === 'MIDDLE');
+        const highClasses = classData.filter(cls => cls.schoolType === 'HIGH');
+        
         // 각 반의 학생 정보 가져오기
         const allStudents = [];
-        for (const classRoom of classData) {
+        
+        // 중학교 학생 정보
+        for (const classRoom of middleClasses) {
           const studentsData = await apiRequest(API_ENDPOINTS.students.getByClass(classRoom.id));
           const transformedStudents = studentsData.map(student => ({
             id: student.studentId,
             name: student.studentName,
-            class: `${classRoom.grade}학년 ${classRoom.classNumber}반`,
+            class: `중${classRoom.grade}-${classRoom.classNumber}`,
+            status: ''
+          }));
+          allStudents.push(...transformedStudents);
+        }
+        
+        // 고등학교 학생 정보
+        for (const classRoom of highClasses) {
+          const studentsData = await apiRequest(API_ENDPOINTS.students.getByClass(classRoom.id));
+          const transformedStudents = studentsData.map(student => ({
+            id: student.studentId,
+            name: student.studentName,
+            class: `고${classRoom.grade}-${classRoom.classNumber}`,
             status: ''
           }));
           allStudents.push(...transformedStudents);
