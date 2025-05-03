@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:8080';
 const API_ENDPOINTS = {
   // 학생 관련 API
   students: {
-    getAll: `${BASE_URL}/student-classes/year/2025/class-rooms`,
+    getAll: (year) => `${BASE_URL}/student-classes/school-year/${year}`,
     getByClass: (classId) => `${BASE_URL}/student-classes/classroom/${classId}?schoolYear=2025`,
     getById: (id) => `${BASE_URL}/students/${id}`,
     create: `${BASE_URL}/students`,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../api/api';
 import './AllStudentsView.css';
 
@@ -31,18 +31,16 @@ const AllStudentsView = () => {
     try {
       const year = date.split('-')[0];
       const attendanceData = await apiRequest(API_ENDPOINTS.attendance.getByDate(year, date));
-
-      // 출석 상태를 학생 ID로 매핑
+      // 출석 상태를 studentId로 매핑
       const attendanceMap = attendanceData.reduce((map, item) => {
         map[item.studentId] = attendanceStatusMap[item.attendanceStatus];
         return map;
       }, {});
-
-      // 학생 데이터와 출석 상태를 결합
-      setStudents(prevStudents => 
+      // 학생 데이터와 출석 상태 결합
+      setStudents(prevStudents =>
         prevStudents.map(student => ({
           ...student,
-          status: attendanceMap[student.id] || ''
+          status: attendanceMap[student.studentId] || ''
         }))
       );
     } catch (err) {
@@ -50,87 +48,49 @@ const AllStudentsView = () => {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const year = selectedDate.split('-')[0];
+      const classData = await apiRequest(API_ENDPOINTS.students.getAll(year));
+      const transformedStudents = classData.flatMap(classRoom => {
+        const classPrefix = classRoom.schoolType === 'MIDDLE' ? '중' : '고';
+        return classRoom.students.map(student => ({
+          id: student.id,
+          studentId: student.studentId,
+          name: student.studentName,
+          class: `${classPrefix}${classRoom.grade}-${classRoom.classNumber}`,
+          status: ''
+        }));
+      });
+      setStudents(transformedStudents);
+      await fetchAttendanceData(selectedDate);
+      setLoading(false);
+    } catch (err) {
+      setError('데이터를 불러오는 중 오류가 발생했습니다.');
+      setLoading(false);
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 반 목록 가져오기
-        const classData = await apiRequest(API_ENDPOINTS.students.getAll);
-        
-        // 중학교와 고등학교 분리
-        const middleClasses = classData.filter(cls => cls.schoolType === 'MIDDLE');
-        const highClasses = classData.filter(cls => cls.schoolType === 'HIGH');
-        
-        // 각 반의 학생 정보 가져오기
-        const allStudents = [];
-        
-        // 중학교 학생 정보
-        for (const classRoom of middleClasses) {
-          const studentsData = await apiRequest(API_ENDPOINTS.students.getByClass(classRoom.id));
-          const transformedStudents = studentsData.map(student => ({
-            id: student.studentId,
-            name: student.studentName,
-            class: `중${classRoom.grade}-${classRoom.classNumber}`,
-            status: ''
-          }));
-          allStudents.push(...transformedStudents);
-        }
-        
-        // 고등학교 학생 정보
-        for (const classRoom of highClasses) {
-          const studentsData = await apiRequest(API_ENDPOINTS.students.getByClass(classRoom.id));
-          const transformedStudents = studentsData.map(student => ({
-            id: student.studentId,
-            name: student.studentName,
-            class: `고${classRoom.grade}-${classRoom.classNumber}`,
-            status: ''
-          }));
-          allStudents.push(...transformedStudents);
-        }
-
-        setStudents(allStudents);
-        await fetchAttendanceData(selectedDate);
-        setLoading(false);
-      } catch (err) {
-        setError('데이터를 불러오는 중 오류가 발생했습니다.');
-        setLoading(false);
-        console.error(err);
-      }
-    };
-
     fetchData();
   }, [selectedDate]);
 
-  const handleStatusChange = async (studentId, newStatus) => {
+  const handleStatusChange = async (studentClassId, newStatus, studentId) => {
     try {
       const status = reverseAttendanceStatusMap[newStatus];
-      
-      // 먼저 로컬 상태 업데이트
-      setStudents(prevStudents => 
-        prevStudents.map(student => {
-          if (student.id === studentId) {
-            return {
-              ...student,
-              status: student.status === newStatus ? '' : newStatus
-            };
-          }
-          return student;
-        })
-      );
-      
-      // API로 출석 상태 업데이트
-      await apiRequest(API_ENDPOINTS.attendance.update(studentId, selectedDate), {
+      const endpoint = API_ENDPOINTS.attendance.update(studentClassId, selectedDate);
+      const requestBody = { status: status };
+      await apiRequest(endpoint, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ status })
+        body: JSON.stringify(requestBody)
       });
-
-      // 출석 상태 다시 불러오기
+      // 서버 응답 후에만 fetchAttendanceData로 상태 동기화
       await fetchAttendanceData(selectedDate);
     } catch (err) {
-      console.error('출석 상태 업데이트 중 오류 발생:', err);
-      // 에러 발생 시 원래 상태로 되돌리기
       await fetchAttendanceData(selectedDate);
     }
   };
@@ -196,6 +156,30 @@ const AllStudentsView = () => {
     return groups;
   }, {});
 
+  // 반 이름 파싱 함수
+  const parseClassName = (className) => {
+    // 예: "중1-2" → ["중", 1, 2]
+    const match = className.match(/(중|고)(\d+)-(\d+)/);
+    if (!match) return ["", 0, 0];
+    return [match[1], parseInt(match[2]), parseInt(match[3])];
+  };
+
+  // 반 정렬 함수
+  const sortClasses = (a, b) => {
+    const [aType, aGrade, aClass] = parseClassName(a);
+    const [bType, bGrade, bClass] = parseClassName(b);
+
+    if (aType !== bType) {
+      return aType === '중' ? -1 : 1;
+    }
+    if (aGrade !== bGrade) {
+      return aGrade - bGrade;
+    }
+    return aClass - bClass;
+  };
+
+  const sortedClasses = Object.keys(groupedStudents).sort(sortClasses);
+
   if (loading) return <div className="loading">로딩 중...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -221,7 +205,7 @@ const AllStudentsView = () => {
             onChange={(e) => setSelectedClass(e.target.value)}
           >
             <option value="all">전체 반</option>
-            {Object.keys(groupedStudents).map(cls => (
+            {sortedClasses.map(cls => (
               <option key={cls} value={cls}>{cls}</option>
             ))}
           </select>
@@ -229,11 +213,11 @@ const AllStudentsView = () => {
       </div>
 
       <div className="class-groups">
-        {Object.entries(groupedStudents).map(([className, students]) => (
+        {sortedClasses.map(className => (
           <div key={className} className="class-section">
             <div className="class-header">
               <h2>{className}</h2>
-              <span className="student-count">{students.length}명</span>
+              <span className="student-count">{groupedStudents[className].length}명</span>
             </div>
             <div className="class-content">
               <table>
@@ -245,7 +229,7 @@ const AllStudentsView = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {students.map(student => (
+                  {groupedStudents[className].map(student => (
                     <tr key={student.id}>
                       <td>{student.id}</td>
                       <td>{student.name}</td>
@@ -253,25 +237,25 @@ const AllStudentsView = () => {
                         <div className="attendance-buttons">
                           <button 
                             className={`btn-status ${student.status === 'present' ? 'active' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'present')}
+                            onClick={() => handleStatusChange(student.id, 'present', student.studentId)}
                           >
                             출석
                           </button>
                           <button 
                             className={`btn-status ${student.status === 'late' ? 'active' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'late')}
+                            onClick={() => handleStatusChange(student.id, 'late', student.studentId)}
                           >
                             지각
                           </button>
                           <button 
                             className={`btn-status ${student.status === 'absent' ? 'active' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'absent')}
+                            onClick={() => handleStatusChange(student.id, 'absent', student.studentId)}
                           >
                             결석
                           </button>
                           <button 
                             className={`btn-status ${student.status === 'etc' ? 'active' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'etc')}
+                            onClick={() => handleStatusChange(student.id, 'etc', student.studentId)}
                           >
                             기타
                           </button>
