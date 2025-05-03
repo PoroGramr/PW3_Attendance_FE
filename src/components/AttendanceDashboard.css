@@ -1,0 +1,17 @@
+.attendance-dashboard {
+  padding: 20px;
+}
+
+.dashboard-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-content p {
+  color: #666;
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 20px 0;
+} 

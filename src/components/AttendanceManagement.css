@@ -1,0 +1,325 @@
+.attendance-container {
+  padding: 20px;
+  background-color: #f5f6f8;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.date-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.date-selector select,
+.date-selector input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.main-content {
+  display: flex;
+  gap: 20px;
+}
+
+.attendance-list {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.attendance-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-status {
+  padding: 6px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #f5f5f5;
+  color: #666;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-status:hover {
+  background-color: #f0f0f0;
+}
+
+.btn-status.active {
+  border: none;
+  color: white;
+}
+
+.btn-status.active:nth-child(1) {
+  background-color: #4CAF50;
+}
+
+.btn-status.active:nth-child(2) {
+  background-color: #FFC107;
+  color: #333;
+}
+
+.btn-status.active:nth-child(3) {
+  background-color: #f44336;
+}
+
+.btn-status.active:nth-child(4) {
+  background-color: #9E9E9E;
+}
+
+.attendance-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.attendance-buttons button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.btn-present {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.btn-late {
+  background-color: #FFC107;
+  color: black;
+}
+
+.btn-absent {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-etc {
+  background-color: #9E9E9E;
+  color: white;
+}
+
+.attendance-summary {
+  width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.summary-stats {
+  display: grid;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.stat-item.total {
+  background-color: #E3F2FD;
+}
+
+.stat-item.present {
+  background-color: #E8F5E9;
+}
+
+.stat-item.absent {
+  background-color: #FFEBEE;
+}
+
+.stat-item.late {
+  background-color: #FFF3E0;
+}
+
+.count {
+  font-weight: bold;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .date-selector {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .main-content {
+    flex-direction: column;
+  }
+
+  .attendance-summary {
+    width: 100%;
+  }
+
+  .attendance-buttons {
+    flex-direction: column;
+  }
+
+  .attendance-buttons button {
+    width: 100%;
+  }
+}
+
+/* 기존 CSS 유지 */
+
+/* 하단 버튼 스타일 추가 */
+.attendance-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.btn-export {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 4px;
+  border: none;
+  background-color: #555;
+  color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-export:hover {
+  background-color: #444;
+}
+
+.icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* 반응형 디자인 업데이트 */
+@media (max-width: 768px) {
+  .attendance-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn-export {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-summary {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.attendance-summary h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.summary-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 100px;
+}
+
+.stat-item span {
+  display: block;
+}
+
+.stat-item .count {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.stat-item.total .count {
+  color: #2196F3;
+}
+
+.stat-item.present .count {
+  color: #4CAF50;
+}
+
+.stat-item.absent .count {
+  color: #F44336;
+}
+
+.stat-item.late .count {
+  color: #FFC107;
+}

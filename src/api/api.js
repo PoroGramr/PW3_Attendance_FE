@@ -1,0 +1,72 @@
+// API 기본 URL 설정
+const BASE_URL = 'http://localhost:8080';
+
+// API 엔드포인트 객체
+const API_ENDPOINTS = {
+  // 학생 관련 API
+  students: {
+    getAll: `${BASE_URL}/student-classes/year/2025/class-rooms`,
+    getByClass: (classId) => `${BASE_URL}/student-classes/classroom/${classId}?schoolYear=2025`,
+    getById: (id) => `${BASE_URL}/students/${id}`,
+    create: `${BASE_URL}/students`,
+    update: (id) => `${BASE_URL}/students/${id}`,
+    delete: (id) => `${BASE_URL}/students/${id}`,
+  },
+
+  // 교사 관련 API
+  teachers: {
+    getAll: `${BASE_URL}/teachers`,
+    getById: (id) => `${BASE_URL}/teachers/${id}`,
+    create: `${BASE_URL}/teachers`,
+    update: (id) => `${BASE_URL}/teachers/${id}`,
+    delete: (id) => `${BASE_URL}/teachers/${id}`,
+  },
+
+  // 출석 관련 API
+  attendance: {
+    getAll: `${BASE_URL}/attendance`,
+    getByDate: (year, date) => `${BASE_URL}/attendances/year/${year}/date/${date}`,
+    getByClass: (classId, year, date) => `${BASE_URL}/attendances/class/${classId}/year/${year}/date/${date}`,
+    getByStudent: (studentId) => `${BASE_URL}/attendance/student/${studentId}`,
+    create: `${BASE_URL}/attendance`,
+    update: (studentId, date) => `${BASE_URL}/attendances/${studentId}/${date}`,
+  },
+
+  // 반 관련 API
+  classes: {
+    getAll: (year) => `${BASE_URL}/student-classes/year/${year}/class-rooms`,
+    getById: (id) => `${BASE_URL}/student-classes/classroom/${id}?schoolYear=2025`,
+    create: `${BASE_URL}/student-classes`,
+    update: (id) => `${BASE_URL}/student-classes/${id}`,
+    delete: (id) => `${BASE_URL}/student-classes/${id}`,
+  },
+};
+
+// API 요청 헬퍼 함수
+const apiRequest = async (endpoint, options = {}) => {
+  try {
+    console.log('API 요청:', endpoint, options); // 디버깅용 로그
+    const response = await fetch(endpoint, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      console.error('API 응답 에러:', response.status, errorData); // 디버깅용 로그
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorData?.message || 'Unknown error'}`);
+    }
+
+    const data = await response.json();
+    console.log('API 응답:', data); // 디버깅용 로그
+    return data;
+  } catch (error) {
+    console.error('API 요청 중 에러 발생:', error);
+    throw error;
+  }
+};
+
+export { API_ENDPOINTS, apiRequest }; 
