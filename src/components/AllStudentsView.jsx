@@ -151,12 +151,19 @@ const AllStudentsView = () => {
       .map(([className, studentNames]) => `${className}: ${studentNames.join(', ')}`)
       .join('\n\n');
 
+    // 전체 출석자 수 계산
+    const totalPresentStudents = presentAndLateStudents.length;
+
     return (
       <div className="modal-overlay" onClick={() => setShowExportModal(false)}>
         <div className="modal-content" onClick={e => e.stopPropagation()}>
           <h2>출석부 내보내기 ({selectedDate})</h2>
           <div className="export-content">
-            <pre className="export-text">{sortedClassGroups}</pre>
+            <pre className="export-text">
+              {sortedClassGroups}
+              {"\n\n"}
+              전체 출석자: {totalPresentStudents}명
+            </pre>
           </div>
           <div className="modal-actions">
             <button className="btn-close" onClick={() => setShowExportModal(false)}>

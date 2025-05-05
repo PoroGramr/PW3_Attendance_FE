@@ -1,5 +1,5 @@
 // API 기본 URL 설정
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://pw3api.porogramr.site';
 
 // API 엔드포인트 객체
 const API_ENDPOINTS = {
