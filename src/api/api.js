@@ -1,11 +1,14 @@
 // API 기본 URL 설정
 const BASE_URL = 'https://pw3api.porogramr.site';
+// const BASE_URL = 'http://localhost:8080';
 
 // API 엔드포인트 객체
 const API_ENDPOINTS = {
   // 학생 관련 API
   students: {
-    getAll: (year) => `${BASE_URL}/student-classes/school-year/${year}`,
+    getAll: `${BASE_URL}/students`,
+    getAllWithClassInfo: (year) => `${BASE_URL}/students/studentsWithClassInfo?schoolYear=${year}`,
+    getByYear: (year) => `${BASE_URL}/students/year?year=${year}`,
     getByClass: (classId) => `${BASE_URL}/student-classes/classroom/${classId}?schoolYear=2025`,
     getById: (id) => `${BASE_URL}/students/${id}`,
     create: `${BASE_URL}/students`,
@@ -35,6 +38,7 @@ const API_ENDPOINTS = {
   // 반 관련 API
   classes: {
     getAll: (year) => `${BASE_URL}/student-classes/year/${year}/class-rooms`,
+    getBySchoolYear: (year) => `${BASE_URL}/student-classes/school-year/${year}`,
     getById: (id) => `${BASE_URL}/student-classes/classroom/${id}?schoolYear=2025`,
     create: `${BASE_URL}/student-classes`,
     update: (id) => `${BASE_URL}/student-classes/${id}`,

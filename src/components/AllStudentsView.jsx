@@ -55,12 +55,12 @@ const AllStudentsView = () => {
   const fetchData = async () => {
     try {
       const year = selectedDate.split('-')[0];
-      const classData = await apiRequest(API_ENDPOINTS.students.getAll(year));
+      const classData = await apiRequest(API_ENDPOINTS.classes.getBySchoolYear(year));
       const transformedStudents = classData.flatMap(classRoom => {
         const classPrefix = classRoom.schoolType === 'MIDDLE' ? '중' : '고';
         return classRoom.students.map(student => ({
-          id: student.id,
-          studentId: student.studentId,
+          id: student.id,  // 출석 체크에 사용할 ID
+          studentId: student.studentId,  // 학생 고유 ID
           name: student.studentName,
           class: `${classPrefix}${classRoom.grade}-${classRoom.classNumber}`,
           status: ''

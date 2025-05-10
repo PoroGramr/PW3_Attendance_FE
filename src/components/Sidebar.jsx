@@ -41,8 +41,15 @@ const Sidebar = ({ onMenuSelect, activeItem }) => {
           <span>전체 학생 조회</span>
         </li>
         <li 
+          className={`menu-item ${location.pathname === '/student-management' ? 'active' : ''}`}
+          onClick={() => handleItemClick('student-management')}
+        >
+          <div className="menu-icon">👨‍🎓</div>
+          <span>학생 관리</span>
+        </li>
+        <li 
           className={`menu-item ${location.pathname === '/attendance' ? 'active' : ''}`}
-          onClick={() => handleItemClick('management')}
+          onClick={() => handleItemClick('attendance')}
         >
           <div className="menu-icon">✓</div>
           <span>출석 관리</span>
