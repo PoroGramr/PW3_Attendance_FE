@@ -73,9 +73,11 @@ const TeacherAttendanceView = () => {
     setSelectedDate(e.target.value);
   };
 
-  const filteredTeachers = teachers.filter(teacher =>
-    teacher.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTeachers = teachers
+    .filter(teacher =>
+      teacher.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => a.id - b.id);
 
   if (loading) return <div className="loading">로딩 중...</div>;
   if (error) return <div className="error">{error}</div>;

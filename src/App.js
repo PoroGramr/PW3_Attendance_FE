@@ -51,6 +51,7 @@ const AppContent = () => {
                      location.pathname === '/student-management' ? 'student-management' : 
                      location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
                      location.pathname === '/teacher-management' ? 'teacher-management' : 'attendance'} 
+          onClose={() => setSidebarOpen(false)}
         />
       </div>
       <div className="main-container">
