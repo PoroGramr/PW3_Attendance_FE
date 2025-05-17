@@ -29,12 +29,12 @@ const Sidebar = ({ onMenuSelect, activeItem }) => {
             <span>학생 출석</span>
           </Link>
         </li>
-        <li className={`menu-item ${location.pathname === '/attendance' ? 'active' : ''}`}>
+        {/* <li className={`menu-item ${location.pathname === '/attendance' ? 'active' : ''}`}>
           <Link to="/attendance" className="menu-link" onClick={() => handleItemClick('attendance')}>
             <div className="menu-icon">✓</div>
             <span>반별 출석</span>
           </Link>
-        </li>
+        </li> */}
         <li className={`menu-item ${location.pathname === '/student-management' ? 'active' : ''}`}>
           <Link to="/student-management" className="menu-link" onClick={() => handleItemClick('student-management')}>
             <div className="menu-icon">👨‍🎓</div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../api/api';
 import './AllStudentsView.css';
 
@@ -15,6 +15,7 @@ const AllStudentsView = () => {
     return koreaTime.toISOString().split('T')[0];
   });
   const [teacherCount, setTeacherCount] = useState(0);
+  const classRefs = useRef({});
 
   // 출석 상태 매핑
   const attendanceStatusMap = {
@@ -92,6 +93,12 @@ const AllStudentsView = () => {
   useEffect(() => {
     fetchData();
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (selectedClass !== 'all' && classRefs.current[selectedClass]) {
+      classRefs.current[selectedClass].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [selectedClass]);
 
   const handleStatusChange = async (studentClassId, newStatus, studentId) => {
     try {
@@ -197,7 +204,7 @@ const AllStudentsView = () => {
     return matchesSearch && matchesClass;
   });
 
-  const groupedStudents = filteredStudents.reduce((groups, student) => {
+  const groupedStudents = students.reduce((groups, student) => {
     if (!groups[student.class]) {
       groups[student.class] = [];
     }
@@ -263,58 +270,66 @@ const AllStudentsView = () => {
 
       <div className="class-groups">
         {sortedClasses.map(className => (
-          <div key={className} className="class-section">
+          <div
+            key={className}
+            className="class-section"
+            ref={el => (classRefs.current[className] = el)}
+          >
             <div className="class-header">
               <h2>{className}</h2>
               <span className="student-count">{groupedStudents[className].length}명</span>
             </div>
-            <div className="class-content">
-              <table>
-                <thead>
-                  <tr>
-                    <th>번호</th>
-                    <th>이름</th>
-                    <th>출석 상태</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {groupedStudents[className].map(student => (
-                    <tr key={student.id}>
-                      <td>{student.id}</td>
-                      <td>{student.name}</td>
-                      <td>
-                        <div className="attendance-buttons">
-                          <button 
-                            className={`btn-status ${student.status === 'present' ? 'active' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'present', student.studentId)}
-                          >
-                            출석
-                          </button>
-                          <button 
-                            className={`btn-status ${student.status === 'late' ? 'active' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'late', student.studentId)}
-                          >
-                            지각
-                          </button>
-                          <button 
-                            className={`btn-status ${student.status === 'absent' ? 'active' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'absent', student.studentId)}
-                          >
-                            결석
-                          </button>
-                          <button 
-                            className={`btn-status ${student.status === 'etc' ? 'active' : ''}`}
-                            onClick={() => handleStatusChange(student.id, 'etc', student.studentId)}
-                          >
-                            기타
-                          </button>
-                        </div>
-                      </td>
+            {(selectedClass === 'all' || selectedClass === className) && (
+              <div className="class-content">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>번호</th>
+                      <th>이름</th>
+                      <th>출석 상태</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {groupedStudents[className]
+                      .filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                      .map(student => (
+                        <tr key={student.id}>
+                          <td>{student.id}</td>
+                          <td>{student.name}</td>
+                          <td>
+                            <div className="attendance-buttons">
+                              <button 
+                                className={`btn-status ${student.status === 'present' ? 'active' : ''}`}
+                                onClick={() => handleStatusChange(student.id, 'present', student.studentId)}
+                              >
+                                출석
+                              </button>
+                              <button 
+                                className={`btn-status ${student.status === 'late' ? 'active' : ''}`}
+                                onClick={() => handleStatusChange(student.id, 'late', student.studentId)}
+                              >
+                                지각
+                              </button>
+                              <button 
+                                className={`btn-status ${student.status === 'absent' ? 'active' : ''}`}
+                                onClick={() => handleStatusChange(student.id, 'absent', student.studentId)}
+                              >
+                                결석
+                              </button>
+                              <button 
+                                className={`btn-status ${student.status === 'etc' ? 'active' : ''}`}
+                                onClick={() => handleStatusChange(student.id, 'etc', student.studentId)}
+                              >
+                                기타
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         ))}
       </div>
