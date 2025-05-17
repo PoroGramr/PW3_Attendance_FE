@@ -18,11 +18,17 @@ const API_ENDPOINTS = {
 
   // 교사 관련 API
   teachers: {
-    getAll: `${BASE_URL}/teachers`,
+    getAll: () => `${BASE_URL}/teacher`,
     getById: (id) => `${BASE_URL}/teachers/${id}`,
-    create: `${BASE_URL}/teachers`,
-    update: (id) => `${BASE_URL}/teachers/${id}`,
-    delete: (id) => `${BASE_URL}/teachers/${id}`,
+    create: () => `${BASE_URL}/teacher`,
+    update: (id) => `${BASE_URL}/teacher/${id}`,
+    delete: (id) => `${BASE_URL}/teacher/${id}`,
+  },
+
+  // 선생님 출석 관련 API
+  teacherAttendance: {
+    getByDate: (date) => `${BASE_URL}/attendance/teachers/status?date=${date}`,
+    update: (teacherId, status, date) => `${BASE_URL}/attendance/teacher/mark?teacherId=${teacherId}&status=${status}&date=${date}`,
   },
 
   // 출석 관련 API

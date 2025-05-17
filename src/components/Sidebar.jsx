@@ -20,39 +20,38 @@ const Sidebar = ({ onMenuSelect, activeItem }) => {
         </div>
       </div>
       
-      <div className="profile-section">
-        <div className="profile-avatar">
-          <img src="https://via.placeholder.com/40" alt="Profile" />
-        </div>
-        <div className="profile-info">
-          <h3>김선생님</h3>
-          <p>수학 교사</p>
-        </div>
-      </div>
-      
       <div className="sidebar-divider"></div>
       
       <ul className="sidebar-menu">
-        <li 
-          className={`menu-item ${location.pathname === '/' ? 'active' : ''}`}
-          onClick={() => handleItemClick('students')}
-        >
-          <div className="menu-icon">👥</div>
-          <span>전체 학생 조회</span>
+        <li className={`menu-item ${location.pathname === '/' ? 'active' : ''}`}>
+          <Link to="/" className="menu-link" onClick={() => handleItemClick('students')}>
+            <div className="menu-icon">👥</div>
+            <span>학생 출석</span>
+          </Link>
         </li>
-        <li 
-          className={`menu-item ${location.pathname === '/student-management' ? 'active' : ''}`}
-          onClick={() => handleItemClick('student-management')}
-        >
-          <div className="menu-icon">👨‍🎓</div>
-          <span>학생 관리</span>
+        <li className={`menu-item ${location.pathname === '/attendance' ? 'active' : ''}`}>
+          <Link to="/attendance" className="menu-link" onClick={() => handleItemClick('attendance')}>
+            <div className="menu-icon">✓</div>
+            <span>반별 출석</span>
+          </Link>
         </li>
-        <li 
-          className={`menu-item ${location.pathname === '/attendance' ? 'active' : ''}`}
-          onClick={() => handleItemClick('attendance')}
-        >
-          <div className="menu-icon">✓</div>
-          <span>출석 관리</span>
+        <li className={`menu-item ${location.pathname === '/student-management' ? 'active' : ''}`}>
+          <Link to="/student-management" className="menu-link" onClick={() => handleItemClick('student-management')}>
+            <div className="menu-icon">👨‍🎓</div>
+            <span>학생 관리</span>
+          </Link>
+        </li>
+        <li className={`menu-item ${location.pathname === '/teacher-attendance' ? 'active' : ''}`}>
+          <Link to="/teacher-attendance" className="menu-link" onClick={() => handleItemClick('teacher-attendance')}>
+            <div className="menu-icon">👨‍🏫</div>
+            <span>선생님 출석</span>
+          </Link>
+        </li>
+        <li className={`menu-item ${location.pathname === '/teacher-management' ? 'active' : ''}`}>
+          <Link to="/teacher-management" className="menu-link" onClick={() => handleItemClick('teacher-management')}>
+            <div className="menu-icon">👨‍🏫</div>
+            <span>선생님 관리</span>
+          </Link>
         </li>
       </ul>
       

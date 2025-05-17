@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate 
 import AllStudentsView from './components/AllStudentsView';
 import AttendanceManagement from './components/AttendanceManagement';
 import StudentManagement from './components/StudentManagement';
+import TeacherAttendanceView from './components/TeacherAttendanceView';
+import TeacherManagement from './components/TeacherManagement';
 import Sidebar from './components/Sidebar';
 import './App.css';
 
@@ -26,6 +28,12 @@ const AppContent = () => {
       case 'attendance':
         navigate('/attendance');
         break;
+      case 'teacher-attendance':
+        navigate('/teacher-attendance');
+        break;
+      case 'teacher-management':
+        navigate('/teacher-management');
+        break;
       default:
         navigate('/');
     }
@@ -40,7 +48,9 @@ const AppContent = () => {
         <Sidebar 
           onMenuSelect={handleMenuSelect} 
           activeItem={location.pathname === '/' ? 'students' : 
-                     location.pathname === '/student-management' ? 'student-management' : 'attendance'} 
+                     location.pathname === '/student-management' ? 'student-management' : 
+                     location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
+                     location.pathname === '/teacher-management' ? 'teacher-management' : 'attendance'} 
         />
       </div>
       <div className="main-container">
@@ -51,6 +61,8 @@ const AppContent = () => {
           <Route path="/" element={<AllStudentsView />} />
           <Route path="/student-management" element={<StudentManagement />} />
           <Route path="/attendance" element={<AttendanceManagement />} />
+          <Route path="/teacher-attendance" element={<TeacherAttendanceView />} />
+          <Route path="/teacher-management" element={<TeacherManagement />} />
         </Routes>
       </div>
     </div>

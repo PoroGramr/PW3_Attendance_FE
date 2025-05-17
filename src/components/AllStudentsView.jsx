@@ -14,6 +14,7 @@ const AllStudentsView = () => {
     const koreaTime = new Date(now.getTime() + (9 * 60 * 60 * 1000));
     return koreaTime.toISOString().split('T')[0];
   });
+  const [teacherCount, setTeacherCount] = useState(0);
 
   // 출석 상태 매핑
   const attendanceStatusMap = {
@@ -52,6 +53,17 @@ const AllStudentsView = () => {
     }
   };
 
+  const fetchTeacherAttendance = async (date) => {
+    try {
+      const teacherAttendance = await apiRequest(API_ENDPOINTS.teacherAttendance.getByDate(date));
+      // 출석(ATTEND, LATE) 상태인 선생님만 카운트
+      const count = teacherAttendance.filter(t => t.attendanceStatus === 'ATTEND' || t.attendanceStatus === 'LATE').length;
+      setTeacherCount(count);
+    } catch (err) {
+      setTeacherCount(0);
+    }
+  };
+
   const fetchData = async () => {
     try {
       const year = selectedDate.split('-')[0];
@@ -68,6 +80,7 @@ const AllStudentsView = () => {
       });
       setStudents(transformedStudents);
       await fetchAttendanceData(selectedDate);
+      await fetchTeacherAttendance(selectedDate);
       setLoading(false);
     } catch (err) {
       setError('데이터를 불러오는 중 오류가 발생했습니다.');
@@ -158,11 +171,14 @@ const AllStudentsView = () => {
       <div className="modal-overlay" onClick={() => setShowExportModal(false)}>
         <div className="modal-content" onClick={e => e.stopPropagation()}>
           <h2>출석부 내보내기 ({selectedDate})</h2>
+          <div className="export-summary" style={{marginBottom: '16px', fontWeight: 500, fontSize: '1.1em'}}>
+            {selectedDate.replace(/-/g, '.')}<br/>
+            학생: {presentAndLateStudents.length}명<br/>
+            선생님 (헬퍼포함): {teacherCount}명
+          </div>
           <div className="export-content">
             <pre className="export-text">
               {sortedClassGroups}
-              {"\n\n"}
-              전체 출석자: {totalPresentStudents}명
             </pre>
           </div>
           <div className="modal-actions">
