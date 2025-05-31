@@ -234,7 +234,14 @@ const AllStudentsView = () => {
     return aClass - bClass;
   };
 
-  const sortedClasses = Object.keys(groupedStudents).sort(sortClasses);
+  const sortedClasses = Object.keys(groupedStudents)
+    .filter(className => {
+      const studentsInClass = groupedStudents[className];
+      return studentsInClass.some(student => 
+        student.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    })
+    .sort(sortClasses);
 
   if (loading) return <div className="loading">로딩 중...</div>;
   if (error) return <div className="error">{error}</div>;
