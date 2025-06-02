@@ -6,6 +6,7 @@ import StudentManagement from './components/StudentManagement';
 import TeacherAttendanceView from './components/TeacherAttendanceView';
 import TeacherManagement from './components/TeacherManagement';
 import Sidebar from './components/Sidebar';
+import CampaignPrayer from './components/CampaignPrayer';
 import './App.css';
 
 const AppContent = () => {
@@ -34,6 +35,9 @@ const AppContent = () => {
       case 'teacher-management':
         navigate('/teacher-management');
         break;
+      case 'campaign':
+        navigate('/campaign');
+        break;
       default:
         navigate('/');
     }
@@ -50,7 +54,8 @@ const AppContent = () => {
           activeItem={location.pathname === '/' ? 'students' : 
                      location.pathname === '/student-management' ? 'student-management' : 
                      location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
-                     location.pathname === '/teacher-management' ? 'teacher-management' : 'attendance'} 
+                     location.pathname === '/teacher-management' ? 'teacher-management' :
+                     location.pathname === '/campaign' ? 'campaign' : 'attendance'} 
           onClose={() => setSidebarOpen(false)}
         />
       </div>
@@ -64,6 +69,7 @@ const AppContent = () => {
           <Route path="/attendance" element={<AttendanceManagement />} />
           <Route path="/teacher-attendance" element={<TeacherAttendanceView />} />
           <Route path="/teacher-management" element={<TeacherManagement />} />
+          <Route path="/campaign" element={<CampaignPrayer />} />
         </Routes>
       </div>
     </div>
