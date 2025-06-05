@@ -53,12 +53,12 @@ const Sidebar = ({ onMenuSelect, activeItem }) => {
             <span>선생님 관리</span>
           </Link>
         </li>
-        {/* <li className={`menu-item ${location.pathname === '/campaign' ? 'active' : ''}`}>
+        <li className={`menu-item ${location.pathname === '/campaign' ? 'active' : ''}`}>
           <Link to="/campaign" className="menu-link" onClick={() => handleItemClick('campaign')}>
             <div className="menu-icon">🙏</div>
             <span>캠페인 기도</span>
           </Link>
-        </li> */}
+        </li>
       </ul>
       
       <div className="sidebar-footer">

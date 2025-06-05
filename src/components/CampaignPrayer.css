@@ -78,6 +78,13 @@
   text-align: center;
 }
 
+.logo-image {
+  display: block;
+  margin: 30px auto;
+  max-width: 150px;
+  height: auto;
+}
+
 .prayer-content {
   width: 100%;
   max-width: 600px;

@@ -35,6 +35,9 @@ const CampaignPrayer = () => {
 
   return (
     <div className="campaign-prayer-container">
+      {/* 로고 이미지 */}
+      <img src="/logo.jpg" alt="교회 로고" className="logo-image" />
+
       <div className="campaign-header">
         {/* D-day 표시 */}
 
