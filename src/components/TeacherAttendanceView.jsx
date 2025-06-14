@@ -77,7 +77,7 @@ const TeacherAttendanceView = () => {
     .filter(teacher =>
       teacher.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a, b) => a.id - b.id);
+    .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 
   if (loading) return <div className="loading">로딩 중...</div>;
   if (error) return <div className="error">{error}</div>;
