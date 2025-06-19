@@ -140,7 +140,7 @@
   color: #1e293b;
   margin: 0 0 8px 0;
   letter-spacing: -0.5px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #1e293b, #1e293b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -167,6 +167,21 @@
   margin: 0;
   text-align: left;
   padding: 0 20px;
+}
+
+.prayer-title-main {
+  margin: 24px 0 8px 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  letter-spacing: -0.5px;
+  text-shadow: none;
+}
+.prayer-title-main span {
+  color: #1e293b;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
 @media (max-width: 768px) {

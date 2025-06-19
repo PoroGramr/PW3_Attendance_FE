@@ -45,6 +45,11 @@ const CampaignPrayer = () => {
           className="date-picker"
         />
 
+        {/* 메인 타이틀 */}
+        <div className="prayer-title-main">
+          여름 수련회를 위한 <span>금식 기도</span>
+        </div>
+
         {/* D-day 표시 */}
         <div className="d-day-display">
           D-{dDay}
