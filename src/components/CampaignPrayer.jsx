@@ -70,6 +70,30 @@ const CampaignPrayer = () => {
             </p>
           </div>
         </div>
+
+        {/* 암송 말씀 섹션 */}
+        <div className="prayer-section">
+          <h2>암송 말씀</h2>
+          <div className="prayer-box">
+            <p className="prayer-title">[창39:23, 개역개정]</p>
+            <p className="prayer-description">
+              간수장은 그의 손에 맡긴 것을 무엇이든지 살펴보지 아니하였으니<br/>
+              이는 여호와께서 요셉과 함께 하심이라<br/>
+              여호와께서 그를 범사에 형통하게 하셨더라
+            </p>
+          </div>
+        </div>
+
+        {/* 선포문 섹션 */}
+        <div className="prayer-section">
+          <h2>선포문</h2>
+          <div className="prayer-box">
+            <p className="prayer-description">
+              나는 형통한 자입니다<br/>
+              하나님과 함께 함으로 오늘도 나는 모든 일에 형통합니다
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
