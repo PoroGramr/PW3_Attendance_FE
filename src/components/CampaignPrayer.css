@@ -272,4 +272,30 @@
     width: 35px;
     height: 35px;
   }
+}
+
+.date-arrow-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+.date-arrow {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #1e293b;
+  cursor: pointer;
+  padding: 4px 14px;
+  border-radius: 50%;
+  transition: background 0.15s;
+}
+.date-arrow:disabled {
+  color: #cbd5e1;
+  cursor: not-allowed;
+  background: none;
+}
+.date-arrow:not(:disabled):hover {
+  background: #f1f5f9;
 } 

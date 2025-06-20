@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './CampaignPrayer.css';
 
+const API_BASE = 'https://pw3api.porogramr.site/pray/';
+
 const CampaignPrayer = () => {
   const [selectedDate, setSelectedDate] = useState(() => {
     const now = new Date();
@@ -8,97 +10,141 @@ const CampaignPrayer = () => {
     return koreaTime.toISOString().split('T')[0];
   });
 
-  // 8월 1일을 기준으로 D-day를 계산하는 함수
-  const calculateDDay = () => {
-    const today = new Date();
-    const targetDate = new Date(today.getFullYear(), 7, 1); // 8월은 0부터 시작하므로 7입니다.
-
-    // 이미 8월 1일이 지났다면, 다음 해 8월 1일을 목표로 설정
-    if (today > targetDate) {
-      targetDate.setFullYear(today.getFullYear() + 1);
+  // 8월 1일을 기준으로 D-day를 계산하는 함수 (기준일을 인자로 받음)
+  const calculateDDay = (baseDateStr) => {
+    const baseDate = new Date(baseDateStr);
+    const targetDate = new Date(baseDate.getFullYear(), 7, 1); // 8월은 0부터 시작하므로 7입니다.
+    if (baseDate > targetDate) {
+      targetDate.setFullYear(baseDate.getFullYear() + 1);
     }
-
-    const timeDiff = targetDate.getTime() - today.getTime();
+    const timeDiff = targetDate.getTime() - baseDate.getTime();
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
     return daysDiff;
   };
 
-  const [dDay, setDDay] = useState(calculateDDay());
+  const [dDay, setDDay] = useState(() => calculateDDay(selectedDate));
 
-  // 날짜가 변경될 때마다 D-day를 다시 계산할 필요는 없으므로 useEffect는 사용하지 않습니다.
-  // 만약 날짜 선택에 따라 D-day 기준일이 바뀌어야 한다면 useEffect나 다른 로직이 필요합니다.
-  
+  // API 데이터 상태
+  const [prayerData, setPrayerData] = useState({
+    prayer: '',
+    prayContent: '',
+    recitation: '',
+    declaration: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // 날짜를 YYYY-MM-DD 문자열로 변환
+  const toDateString = (dateStr) => {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+    const d = new Date(dateStr);
+    return d.toISOString().split('T')[0];
+  };
+
+  // 날짜를 하루 더하거나 빼는 함수
+  const addDays = (dateStr, diff) => {
+    const d = new Date(dateStr);
+    d.setDate(d.getDate() + diff);
+    return d.toISOString().split('T')[0];
+  };
+
+  // API 요청 함수
+  const fetchPrayerData = async (dateStr) => {
+    setLoading(true);
+    setError(null);
+    const reqDate = toDateString(dateStr);
+    try {
+      const res = await fetch(`${API_BASE}${reqDate}`);
+      if (!res.ok) throw new Error('데이터를 불러올 수 없습니다.');
+      const data = await res.json();
+      setPrayerData({
+        prayer: data.prayer || '',
+        prayContent: data.prayContent || '',
+        recitation: data.recitation || '',
+        declaration: data.declaration || '',
+      });
+    } catch (err) {
+      setError(err.message);
+      setPrayerData({ prayer: '', prayContent: '', recitation: '', declaration: '' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPrayerData(selectedDate);
+    setDDay(calculateDDay(selectedDate));
+  }, [selectedDate]);
 
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
 
+  // 이전날/다음날 버튼 핸들러
+  const handlePrevDay = () => {
+    setSelectedDate(prev => addDays(prev, -1));
+  };
+  const handleNextDay = () => {
+    setSelectedDate(prev => addDays(prev, 1));
+  };
+
   return (
     <div className="campaign-prayer-container">
       <div className="campaign-header">
-        {/* D-day 표시 */}
-
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={handleDateChange}
-          className="date-picker"
-        />
-
-        {/* 메인 타이틀 */}
+        <div className="date-arrow-group">
+          <button className="date-arrow" onClick={handlePrevDay}>&#x25C0;</button>
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={handleDateChange}
+            className="date-picker"
+          />
+          <button className="date-arrow" onClick={handleNextDay}>&#x25B6;</button>
+        </div>
         <div className="prayer-title-main">
           여름 수련회를 위한 <span>금식 기도</span>
         </div>
-
-        {/* D-day 표시 */}
         <div className="d-day-display">
           D-{dDay}
         </div>
       </div>
 
       <div className="prayer-content">
-        <div className="prayer-section">
-          <h2>오늘의 기도자</h2>
-          <div className="prayer-box">
-            <p className="prayer-name">홍길동</p>
-          </div>
-        </div>
+        {loading ? (
+          <div className="prayer-section"><p>로딩 중...</p></div>
+        ) : error ? (
+          <div className="prayer-section"><p style={{color:'#ef4444'}}>{error}</p></div>
+        ) : (
+          <>
+            <div className="prayer-section">
+              <h2>오늘의 기도자</h2>
+              <div className="prayer-box">
+                <p className="prayer-name">{prayerData.prayer}</p>
+              </div>
+            </div>
 
-        <div className="prayer-section">
-          <h2>오늘의 기도 제목</h2>
-          <div className="prayer-box">
-            <p className="prayer-title">1. 교회를 위한 기도</p>
-            <p className="prayer-description">
-              - 교회의 부흥을 위해<br/>
-              - 목사님과 교역자님들의 건강을 위해<br/>
-              - 청년부의 성장을 위해
-            </p>
-          </div>
-        </div>
+            <div className="prayer-section">
+              <h2>오늘의 기도 제목</h2>
+              <div className="prayer-box">
+                <p className="prayer-title">{prayerData.prayContent}</p>
+              </div>
+            </div>
 
-        {/* 암송 말씀 섹션 */}
-        <div className="prayer-section">
-          <h2>암송 말씀</h2>
-          <div className="prayer-box">
-            <p className="prayer-title">[창39:23, 개역개정]</p>
-            <p className="prayer-description">
-              간수장은 그의 손에 맡긴 것을 무엇이든지 살펴보지 아니하였으니<br/>
-              이는 여호와께서 요셉과 함께 하심이라<br/>
-              여호와께서 그를 범사에 형통하게 하셨더라
-            </p>
-          </div>
-        </div>
+            <div className="prayer-section">
+              <h2>암송 말씀</h2>
+              <div className="prayer-box">
+                <p className="prayer-description">{prayerData.recitation}</p>
+              </div>
+            </div>
 
-        {/* 선포문 섹션 */}
-        <div className="prayer-section">
-          <h2>선포문</h2>
-          <div className="prayer-box">
-            <p className="prayer-description">
-              나는 형통한 자입니다<br/>
-              하나님과 함께 함으로 오늘도 나는 모든 일에 형통합니다
-            </p>
-          </div>
-        </div>
+            <div className="prayer-section">
+              <h2>선포문</h2>
+              <div className="prayer-box">
+                <p className="prayer-description">{prayerData.declaration}</p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
