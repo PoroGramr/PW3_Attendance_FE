@@ -14,6 +14,9 @@ const AppContent = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // campaign 페이지에서는 사이드바를 숨김
+  const showSidebar = location.pathname !== '/campaign';
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -48,21 +51,25 @@ const AppContent = () => {
 
   return (
     <div className="App">
-      <div className={`sidebar-container ${sidebarOpen ? 'open' : ''}`}>
-        <Sidebar 
-          onMenuSelect={handleMenuSelect} 
-          activeItem={location.pathname === '/' ? 'students' : 
-                     location.pathname === '/student-management' ? 'student-management' : 
-                     location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
-                     location.pathname === '/teacher-management' ? 'teacher-management' :
-                     location.pathname === '/campaign' ? 'campaign' : 'attendance'} 
-          onClose={() => setSidebarOpen(false)}
-        />
-      </div>
+      {showSidebar && (
+        <div className={`sidebar-container ${sidebarOpen ? 'open' : ''}`}>
+          <Sidebar 
+            onMenuSelect={handleMenuSelect} 
+            activeItem={location.pathname === '/' ? 'students' : 
+                       location.pathname === '/student-management' ? 'student-management' : 
+                       location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
+                       location.pathname === '/teacher-management' ? 'teacher-management' :
+                       location.pathname === '/campaign' ? 'campaign' : 'attendance'} 
+            onClose={() => setSidebarOpen(false)}
+          />
+        </div>
+      )}
       <div className="main-container">
-        <button className="menu-toggle" onClick={toggleSidebar}>
-          ☰
-        </button>
+        {showSidebar && (
+          <button className="menu-toggle" onClick={toggleSidebar}>
+            ☰
+          </button>
+        )}
         <Routes>
           <Route path="/" element={<AllStudentsView />} />
           <Route path="/student-management" element={<StudentManagement />} />
