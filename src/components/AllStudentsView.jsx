@@ -102,9 +102,24 @@ const AllStudentsView = () => {
 
   const handleStatusChange = async (studentClassId, newStatus, studentId) => {
     try {
-      const status = reverseAttendanceStatusMap[newStatus];
+      let apiStatus;
+
+      if (newStatus === 'present') {
+        const now = new Date();
+        const nineAm = new Date();
+        nineAm.setHours(9, 0, 0, 0); // 오늘 오전 9시로 시간 설정
+
+        if (now > nineAm) {
+          apiStatus = 'LATE'; // 9시 이후는 '지각'으로 처리
+        } else {
+          apiStatus = 'ATTEND'; // 9시 이전은 '출석'으로 처리
+        }
+      } else {
+        apiStatus = reverseAttendanceStatusMap[newStatus]; // '결석' 버튼의 경우
+      }
+
       const endpoint = API_ENDPOINTS.attendance.update(studentClassId, selectedDate);
-      const requestBody = { status: status };
+      const requestBody = { status: apiStatus };
       await apiRequest(endpoint, {
         method: 'PUT',
         headers: {
@@ -306,28 +321,16 @@ const AllStudentsView = () => {
                           <td>
                             <div className="attendance-buttons">
                               <button 
-                                className={`btn-status ${student.status === 'present' ? 'active' : ''}`}
+                                className={`btn-status ${student.status === 'present' ? 'active' : ''} ${student.status === 'late' ? 'late' : ''}`}
                                 onClick={() => handleStatusChange(student.id, 'present', student.studentId)}
                               >
                                 출석
-                              </button>
-                              <button 
-                                className={`btn-status ${student.status === 'late' ? 'active' : ''}`}
-                                onClick={() => handleStatusChange(student.id, 'late', student.studentId)}
-                              >
-                                지각
                               </button>
                               <button 
                                 className={`btn-status ${student.status === 'absent' ? 'active' : ''}`}
                                 onClick={() => handleStatusChange(student.id, 'absent', student.studentId)}
                               >
                                 결석
-                              </button>
-                              <button 
-                                className={`btn-status ${student.status === 'etc' ? 'active' : ''}`}
-                                onClick={() => handleStatusChange(student.id, 'etc', student.studentId)}
-                              >
-                                기타
                               </button>
                             </div>
                           </td>

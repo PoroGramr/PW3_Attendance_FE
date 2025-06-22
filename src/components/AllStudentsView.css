@@ -46,16 +46,18 @@
 }
 
 .class-groups {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 .class-section {
-  background: white;
-  border-radius: 8px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin: 0 120px 24px 120px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .class-header {
@@ -110,8 +112,9 @@ th, td {
 }
 
 .btn-status.active {
-  border: none;
+  background-color: #3b82f6;
   color: white;
+  font-weight: bold;
 }
 
 .btn-status.active:nth-child(1) {
@@ -129,6 +132,12 @@ th, td {
 
 .btn-status.active:nth-child(4) {
   background-color: #9E9E9E;
+}
+
+.btn-status.late {
+  background-color: #f97316; /* 주황색 */
+  color: white;
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {
@@ -169,6 +178,8 @@ th, td {
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  bottom: 0;
 }
 
 .btn-export {
