@@ -19,6 +19,9 @@ const CampaignPrayer = () => {
     }
     const timeDiff = targetDate.getTime() - baseDate.getTime();
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    if (daysDiff == 365) {
+      return "Day";
+    }
     return daysDiff;
   };
 
