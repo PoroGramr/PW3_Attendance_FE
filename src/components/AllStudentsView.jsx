@@ -15,6 +15,7 @@ const AllStudentsView = () => {
     return koreaTime.toISOString().split('T')[0];
   });
   const [teacherCount, setTeacherCount] = useState(0);
+  const [teacherByClass, setTeacherByClass] = useState({});
   const classRefs = useRef({});
 
   // 출석 상태 매핑
@@ -69,17 +70,21 @@ const AllStudentsView = () => {
     try {
       const year = selectedDate.split('-')[0];
       const classData = await apiRequest(API_ENDPOINTS.classes.getBySchoolYear(year));
+      const teacherMap = {};
       const transformedStudents = classData.flatMap(classRoom => {
         const classPrefix = classRoom.schoolType === 'MIDDLE' ? '중' : '고';
+        const classLabel = `${classPrefix}${classRoom.grade}-${classRoom.classNumber}`;
+        teacherMap[classLabel] = classRoom.teacherName || '담당없음';
         return classRoom.students.map(student => ({
           id: student.id,  // 출석 체크에 사용할 ID
           studentId: student.studentId,  // 학생 고유 ID
           name: student.studentName,
-          class: `${classPrefix}${classRoom.grade}-${classRoom.classNumber}`,
+          class: classLabel,
           status: ''
         }));
       });
       setStudents(transformedStudents);
+      setTeacherByClass(teacherMap);
       await fetchAttendanceData(selectedDate);
       await fetchTeacherAttendance(selectedDate);
       setLoading(false);
@@ -298,7 +303,14 @@ const AllStudentsView = () => {
             ref={el => (classRefs.current[className] = el)}
           >
             <div className="class-header">
-              <h2>{className}</h2>
+              <h2>
+                {className}
+                {teacherByClass[className] && (
+                  <span style={{marginLeft:'8px', color:'#6b7280', fontWeight:500, fontSize:'0.9em'}}>
+                    (담임: {teacherByClass[className]})
+                  </span>
+                )}
+              </h2>
               <span className="student-count">{groupedStudents[className].length}명</span>
             </div>
             {(selectedClass === 'all' || selectedClass === className) && (
