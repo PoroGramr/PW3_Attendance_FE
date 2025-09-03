@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import { API_ENDPOINTS, apiRequest } from '../api/api';
 import TeacherAddModal from './TeacherAddModal';
 import './TeacherManagement.css';
@@ -9,6 +10,11 @@ const TeacherManagement = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMatchModalOpen, setIsMatchModalOpen] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [classrooms, setClassrooms] = useState([]);
+  const [classroomsLoading, setClassroomsLoading] = useState(false);
+  const [selectedClassroomId, setSelectedClassroomId] = useState('');
 
   const fetchTeachers = async () => {
     try {
@@ -21,6 +27,47 @@ const TeacherManagement = () => {
       setError('선생님 정보를 불러오는 중 오류가 발생했습니다.');
       setLoading(false);
       console.error('선생님 정보 로드 에러:', err);
+    }
+  };
+
+  const openMatchModal = async (teacher) => {
+    setSelectedTeacher(teacher);
+    setIsMatchModalOpen(true);
+    try {
+      setClassroomsLoading(true);
+      // 2025 학년도 반 목록 로드
+      const data = await apiRequest(API_ENDPOINTS.classes.getAll(2025));
+      setClassrooms(data);
+      if (data && data.length > 0) {
+        setSelectedClassroomId(String(data[0].id));
+      }
+    } catch (e) {
+      console.error('반 목록 로드 에러:', e);
+    } finally {
+      setClassroomsLoading(false);
+    }
+  };
+
+  const handleSaveMatch = async () => {
+    if (!selectedTeacher || !selectedClassroomId) {
+      setIsMatchModalOpen(false);
+      return;
+    }
+    try {
+      await apiRequest(API_ENDPOINTS.teacherClasses.assign(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          teacherId: selectedTeacher.id,
+          classRoomId: Number(selectedClassroomId),
+          schoolYear: 2025,
+        }),
+      });
+      // 성공 후 닫기 및 알림/갱신
+      setIsMatchModalOpen(false);
+    } catch (e) {
+      console.error('반 매칭 저장 실패:', e);
+      setIsMatchModalOpen(false);
     }
   };
 
@@ -104,6 +151,9 @@ const TeacherManagement = () => {
                     <button className="btn-delete">
                       <span className="icon">🗑️</span>
                     </button>
+                    <button className="btn-match" onClick={() => openMatchModal(teacher)}>
+                      <span className="icon">🔗</span> 반 매칭
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -111,6 +161,43 @@ const TeacherManagement = () => {
           </tbody>
         </table>
       </div>
+
+      {isMatchModalOpen && ReactDOM.createPortal(
+        <div className="tm-modal-backdrop" role="dialog" aria-modal="true">
+          <div className="tm-modal">
+            <div className="tm-modal-header">
+              <h2>반 매칭 - {selectedTeacher?.name}</h2>
+              <button className="tm-modal-close" onClick={() => setIsMatchModalOpen(false)}>✖</button>
+            </div>
+            <div className="tm-modal-body">
+              {classroomsLoading ? (
+                <div>반 목록을 불러오는 중...</div>
+              ) : (
+                <>
+                  <label htmlFor="classroomSelect" className="tm-modal-label">담당 반 선택</label>
+                  <select 
+                    id="classroomSelect"
+                    value={selectedClassroomId}
+                    onChange={(e) => setSelectedClassroomId(e.target.value)}
+                    className="tm-modal-select"
+                  >
+                    {classrooms.map(c => (
+                      <option key={c.id} value={c.id}>
+                        {c.schoolType === 'MIDDLE' ? '중' : '고'} {c.grade}학년 {c.classNumber}반
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+            </div>
+            <div className="tm-modal-footer">
+              <button className="btn-secondary" onClick={() => setIsMatchModalOpen(false)}>취소</button>
+              <button className="btn-primary" onClick={handleSaveMatch}>저장</button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
 
       <TeacherAddModal
         isOpen={isModalOpen}

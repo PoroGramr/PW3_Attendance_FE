@@ -51,6 +51,11 @@ const API_ENDPOINTS = {
     delete: (id) => `${BASE_URL}/student-classes/${id}`,
   },
 
+  // 교사-반 배정 API
+  teacherClasses: {
+    assign: () => `${BASE_URL}/teacher-classes`,
+  },
+
   // 출석 통계 관련 API
   attendanceStats: {
     getClassrooms: `${BASE_URL}/classrooms`,
