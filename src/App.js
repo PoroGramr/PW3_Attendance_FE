@@ -5,6 +5,7 @@ import AttendanceManagement from './components/AttendanceManagement';
 import StudentManagement from './components/StudentManagement';
 import TeacherAttendanceView from './components/TeacherAttendanceView';
 import TeacherManagement from './components/TeacherManagement';
+import AttendanceStats from './components/AttendanceStats';
 import Sidebar from './components/Sidebar';
 import CampaignPrayer from './components/CampaignPrayer';
 import './App.css';
@@ -32,6 +33,9 @@ const AppContent = () => {
       case 'attendance':
         navigate('/attendance');
         break;
+      case 'attendance-stats':
+        navigate('/attendance-stats');
+        break;
       case 'teacher-attendance':
         navigate('/teacher-attendance');
         break;
@@ -57,6 +61,7 @@ const AppContent = () => {
             onMenuSelect={handleMenuSelect} 
             activeItem={location.pathname === '/' ? 'students' : 
                        location.pathname === '/student-management' ? 'student-management' : 
+                       location.pathname === '/attendance-stats' ? 'attendance-stats' :
                        location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
                        location.pathname === '/teacher-management' ? 'teacher-management' :
                        location.pathname === '/campaign' ? 'campaign' : 'attendance'} 
@@ -74,6 +79,7 @@ const AppContent = () => {
           <Route path="/" element={<AllStudentsView />} />
           <Route path="/student-management" element={<StudentManagement />} />
           <Route path="/attendance" element={<AttendanceManagement />} />
+          <Route path="/attendance-stats" element={<AttendanceStats />} />
           <Route path="/teacher-attendance" element={<TeacherAttendanceView />} />
           <Route path="/teacher-management" element={<TeacherManagement />} />
           <Route path="/campaign" element={<CampaignPrayer />} />

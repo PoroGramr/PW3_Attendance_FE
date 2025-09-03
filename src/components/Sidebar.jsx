@@ -15,8 +15,11 @@ const Sidebar = ({ onMenuSelect, activeItem }) => {
     <div className="sidebar">
       <div className="sidebar-header">
         <div className="logo">
-          <span className="logo-icon">📚</span>
-          <h2>PW3 출석 체크</h2>
+          <img 
+            src="https://www.onnuri.org/wp-content/themes/onnuri/images/m_sub04/top_box_photo_03.png" 
+            alt="온누리교회 로고" 
+            className="logo-image"
+          />
         </div>
       </div>
       
@@ -53,25 +56,14 @@ const Sidebar = ({ onMenuSelect, activeItem }) => {
             <span>선생님 관리</span>
           </Link>
         </li>
-        <li className={`menu-item ${location.pathname === '/campaign' ? 'active' : ''}`}>
-          <Link to="/campaign" className="menu-link" onClick={() => handleItemClick('campaign')}>
-            <div className="menu-icon">🙏</div>
-            <span>캠페인 기도</span>
+        <li className={`menu-item ${location.pathname === '/attendance-stats' ? 'active' : ''}`}>
+          <Link to="/attendance-stats" className="menu-link" onClick={() => handleItemClick('attendance-stats')}>
+            <div className="menu-icon">📊</div>
+            <span>출석 통계</span>
           </Link>
         </li>
       </ul>
-      
-      <div className="sidebar-footer">
-        <div className="sidebar-divider"></div>
-        <div className="menu-item">
-          <div className="menu-icon">⚙️</div>
-          <span>설정</span>
-        </div>
-        <div className="menu-item">
-          <div className="menu-icon">🚪</div>
-          <span>로그아웃</span>
-        </div>
-      </div>
+    
     </div>
   );
 };

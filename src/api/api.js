@@ -50,6 +50,13 @@ const API_ENDPOINTS = {
     update: (id) => `${BASE_URL}/student-classes/${id}`,
     delete: (id) => `${BASE_URL}/student-classes/${id}`,
   },
+
+  // 출석 통계 관련 API
+  attendanceStats: {
+    getClassrooms: `${BASE_URL}/classrooms`,
+    getClassAttendance: (classroomId) => `${BASE_URL}/attendances/classrooms/${classroomId}/sundays/summary`,
+    getTotalAttendance: `${BASE_URL}/attendances/summary/sundays`,
+  },
 };
 
 // API 요청 헬퍼 함수
