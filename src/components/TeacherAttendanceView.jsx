@@ -146,6 +146,43 @@ const TeacherAttendanceView = () => {
             ))}
           </tbody>
         </table>
+        
+        {/* 모바일용 카드 레이아웃 */}
+        <div className="teachers-cards-mobile">
+          {filteredTeachers.map(teacher => (
+            <div key={teacher.id} className="teacher-card">
+              <div className="teacher-card-header">
+                <div className="teacher-name">{teacher.name}</div>
+              </div>
+              <div className="attendance-buttons">
+                <button 
+                  className={`btn-status ${teacher.status === 'present' ? 'active' : ''}`}
+                  onClick={() => handleStatusChange(teacher.id, 'present')}
+                >
+                  출석
+                </button>
+                <button 
+                  className={`btn-status ${teacher.status === 'late' ? 'active' : ''}`}
+                  onClick={() => handleStatusChange(teacher.id, 'late')}
+                >
+                  지각
+                </button>
+                <button 
+                  className={`btn-status ${teacher.status === 'absent' ? 'active' : ''}`}
+                  onClick={() => handleStatusChange(teacher.id, 'absent')}
+                >
+                  결석
+                </button>
+                <button 
+                  className={`btn-status ${teacher.status === 'etc' ? 'active' : ''}`}
+                  onClick={() => handleStatusChange(teacher.id, 'etc')}
+                >
+                  기타
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

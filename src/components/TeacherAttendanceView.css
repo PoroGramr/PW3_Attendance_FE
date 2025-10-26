@@ -95,4 +95,85 @@ th {
   background: #f8d7da;
   border-radius: 4px;
   margin: 20px 0;
+}
+
+/* 모바일용 카드 레이아웃 */
+.teachers-cards-mobile {
+  display: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .teacher-attendance-container {
+    padding: 10px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .controls {
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .date-picker,
+  input[type="text"] {
+    width: 100%;
+    font-size: 16px; /* iOS 줌 방지 */
+    padding: 12px;
+  }
+
+  .teachers-list {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* 테이블을 모바일에서 숨기고 카드 레이아웃 사용 */
+  table {
+    display: none;
+  }
+
+  .teachers-cards-mobile {
+    display: block;
+  }
+
+  .teacher-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .teacher-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .teacher-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .attendance-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .btn-status {
+    padding: 10px;
+    font-size: 0.9rem;
+    text-align: center;
+  }
 } 
