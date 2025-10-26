@@ -12,6 +12,10 @@
 
 .sidebar-header {
   padding: 24px 20px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
@@ -19,6 +23,24 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
+  flex: 1;
+}
+
+.sidebar-close {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.sidebar-close:hover {
+  background-color: #f0f0f0;
+  color: #333;
 }
 
 .logo-image {
@@ -134,14 +156,16 @@
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed;
-    left: -280px;
-    z-index: 1000;
+    position: relative;
+    left: 0;
+    z-index: 1002;
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100vh;
   }
 
-  .sidebar.open {
-    left: 0;
+  .sidebar-close {
+    display: block;
   }
 }
 

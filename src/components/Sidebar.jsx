@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Sidebar.css';
 
-const Sidebar = ({ onMenuSelect, activeItem }) => {
+const Sidebar = ({ onMenuSelect, activeItem, onClose }) => {
   const location = useLocation();
 
   const handleItemClick = (itemId) => {
@@ -21,6 +21,9 @@ const Sidebar = ({ onMenuSelect, activeItem }) => {
             className="logo-image"
           />
         </div>
+        <button className="sidebar-close" onClick={onClose}>
+          ✕
+        </button>
       </div>
       
       <div className="sidebar-divider"></div>

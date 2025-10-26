@@ -64,20 +64,28 @@ const AppContent = () => {
   return (
     <div className="App">
       {showSidebar && (
-        <div className={`sidebar-container ${sidebarOpen ? 'open' : ''}`}>
-          <Sidebar 
-            onMenuSelect={handleMenuSelect} 
-            activeItem={location.pathname === '/' ? 'students' : 
-                       location.pathname === '/student-management' ? 'student-management' : 
-                       location.pathname === '/attendance-stats' ? 'attendance-stats' :
-                       location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
-                       location.pathname === '/teacher-management' ? 'teacher-management' :
-                       location.pathname === '/invited-friend-registration' ? 'invited-friend-registration' :
-                       location.pathname === '/invited-friend-list' ? 'invited-friend-list' :
-                       location.pathname === '/campaign' ? 'campaign' : 'attendance'} 
-            onClose={() => setSidebarOpen(false)}
-          />
-        </div>
+        <>
+          {sidebarOpen && (
+            <div 
+              className="sidebar-overlay" 
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+          <div className={`sidebar-container ${sidebarOpen ? 'open' : ''}`}>
+            <Sidebar 
+              onMenuSelect={handleMenuSelect} 
+              activeItem={location.pathname === '/' ? 'students' : 
+                         location.pathname === '/student-management' ? 'student-management' : 
+                         location.pathname === '/attendance-stats' ? 'attendance-stats' :
+                         location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
+                         location.pathname === '/teacher-management' ? 'teacher-management' :
+                         location.pathname === '/invited-friend-registration' ? 'invited-friend-registration' :
+                         location.pathname === '/invited-friend-list' ? 'invited-friend-list' :
+                         location.pathname === '/campaign' ? 'campaign' : 'attendance'} 
+              onClose={() => setSidebarOpen(false)}
+            />
+          </div>
+        </>
       )}
       <div className="main-container">
         {showSidebar && (

@@ -113,6 +113,36 @@ const StudentList = () => {
                   ))}
                 </tbody>
               </table>
+              
+              {/* 모바일용 카드 레이아웃 */}
+              <div className="student-table-mobile">
+                {groupedStudents[className].map(student => (
+                  <div key={student.id} className="student-card">
+                    <div className="student-card-header">
+                      <div className="student-name">{student.name}</div>
+                      <div className="student-id">#{student.id}</div>
+                    </div>
+                    <div className="student-info">
+                      <div className="info-item">
+                        <div className="info-label">연락처</div>
+                        <div className="info-value">{student.phone}</div>
+                      </div>
+                      <div className="info-item">
+                        <div className="info-label">학부모</div>
+                        <div className="info-value">{student.parent}</div>
+                      </div>
+                      <div className="info-item">
+                        <div className="info-label">학부모 연락처</div>
+                        <div className="info-value">{student.parentPhone}</div>
+                      </div>
+                    </div>
+                    <div className="student-actions">
+                      <button className="btn-edit">수정</button>
+                      <button className="btn-delete">삭제</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         ))}

@@ -83,6 +83,10 @@
   overflow-x: auto;
 }
 
+.student-table-mobile {
+  display: none;
+}
+
 .student-table {
   width: 100%;
   border-collapse: collapse;
@@ -138,6 +142,10 @@
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
+  .student-list-container {
+    padding: 10px;
+  }
+
   .header {
     flex-direction: column;
     align-items: flex-start;
@@ -148,15 +156,98 @@
     width: 100%;
     flex-direction: column;
     align-items: stretch;
+    padding: 10px;
   }
   
   .search-bar input,
   .class-filter select {
     width: 100%;
+    font-size: 16px; /* iOS 줌 방지 */
   }
   
   .action-buttons {
     flex-direction: column;
+    gap: 5px;
+  }
+
+  .btn-edit, .btn-delete {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  /* 테이블을 카드 형태로 변경 */
+  .student-table-container {
+    overflow: visible;
+  }
+
+  .student-table {
+    display: none; /* 기본 테이블 숨김 */
+  }
+
+  .student-table-mobile {
+    display: block;
+  }
+
+  .student-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .student-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .student-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .student-id {
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  .student-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 2px;
+  }
+
+  .info-value {
+    font-size: 0.9rem;
+    color: #333;
+    word-break: break-all;
+  }
+
+  .student-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
   }
 }
 

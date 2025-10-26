@@ -350,6 +350,34 @@ const AllStudentsView = () => {
                       ))}
                   </tbody>
                 </table>
+                
+                {/* 모바일용 카드 레이아웃 */}
+                <div className="student-cards-mobile">
+                  {groupedStudents[className]
+                    .filter(student => student.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                    .map(student => (
+                      <div key={student.id} className="student-card">
+                        <div className="student-card-header">
+                          <div className="student-name">{student.name}</div>
+                          <div className="student-id">#{student.id}</div>
+                        </div>
+                        <div className="attendance-buttons">
+                          <button 
+                            className={`btn-status ${student.status === 'present' ? 'active' : ''} ${student.status === 'late' ? 'late' : ''}`}
+                            onClick={() => handleStatusChange(student.id, 'present', student.studentId)}
+                          >
+                            출석
+                          </button>
+                          <button 
+                            className={`btn-status ${student.status === 'absent' ? 'active' : ''}`}
+                            onClick={() => handleStatusChange(student.id, 'absent', student.studentId)}
+                          >
+                            결석
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </div>
             )}
           </div>
