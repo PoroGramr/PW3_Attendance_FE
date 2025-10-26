@@ -62,6 +62,16 @@ const API_ENDPOINTS = {
     getClassAttendance: (classroomId) => `${BASE_URL}/attendances/classrooms/${classroomId}/sundays/summary`,
     getTotalAttendance: `${BASE_URL}/attendances/summary/sundays`,
   },
+
+  // 초청 친구 관련 API
+  invitedFriends: {
+    getAll: `${BASE_URL}/new-friends`,
+    getById: (id) => `${BASE_URL}/new-friends/${id}`,
+    create: `${BASE_URL}/new-friends`,
+    update: (id) => `${BASE_URL}/new-friends/${id}`,
+    delete: (id) => `${BASE_URL}/new-friends/${id}`,
+    searchStudents: (query) => `${BASE_URL}/students/search?query=${encodeURIComponent(query)}`,
+  },
 };
 
 // API 요청 헬퍼 함수

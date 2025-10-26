@@ -62,6 +62,12 @@ const Sidebar = ({ onMenuSelect, activeItem }) => {
             <span>출석 통계</span>
           </Link>
         </li>
+        <li className={`menu-item ${location.pathname === '/invited-friend-registration' ? 'active' : ''}`}>
+          <Link to="/invited-friend-registration" className="menu-link" onClick={() => handleItemClick('invited-friend-registration')}>
+            <div className="menu-icon">👋</div>
+            <span>초청 친구 등록</span>
+          </Link>
+        </li>
       </ul>
     
     </div>
