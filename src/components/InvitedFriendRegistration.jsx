@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { apiRequest, API_ENDPOINTS } from '../api/api';
 import './InvitedFriendRegistration.css';
 
 const InvitedFriendRegistration = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     birthday: '',
@@ -109,7 +111,8 @@ const InvitedFriendRegistration = () => {
         name: formData.name,
         birth: formData.birthday,
         phone: formData.phoneNumber,
-        studentId: formData.invitedBy.id
+        studentId: formData.invitedBy.id,
+        studentName: formData.invitedBy.name
       };
       
       // 초청 친구 등록 API 호출
@@ -156,6 +159,12 @@ const InvitedFriendRegistration = () => {
       <div className="header">
         <h1>초청 친구 등록</h1>
         <p>새로운 초청 친구의 정보를 입력해주세요.</p>
+        <button 
+          onClick={() => navigate('/invited-friend-list')}
+          className="list-button"
+        >
+          📋 초청 친구 목록 보기
+        </button>
       </div>
 
       <form onSubmit={handleSubmit} className="registration-form">

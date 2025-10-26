@@ -27,8 +27,27 @@
 
 .header p {
   color: #666;
-  margin: 0;
+  margin: 0 0 20px 0;
   font-size: 16px;
+}
+
+.list-button {
+  background: #2196F3;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.list-button:hover {
+  background: #1976D2;
 }
 
 .registration-form {
