@@ -16,8 +16,8 @@ const Sidebar = ({ onMenuSelect, activeItem, onClose }) => {
       <div className="sidebar-header">
         <div className="logo">
           <img 
-            src="https://www.onnuri.org/wp-content/themes/onnuri/images/m_sub04/top_box_photo_03.png" 
-            alt="온누리교회 로고" 
+            src="/logo512.png" 
+            alt="PW3 로고" 
             className="logo-image"
           />
         </div>
@@ -47,18 +47,19 @@ const Sidebar = ({ onMenuSelect, activeItem, onClose }) => {
             <span>학생 관리</span>
           </Link>
         </li>
-        <li className={`menu-item ${location.pathname === '/teacher-attendance' ? 'active' : ''}`}>
-          <Link to="/teacher-attendance" className="menu-link" onClick={() => handleItemClick('teacher-attendance')}>
-            <div className="menu-icon">👨‍🏫</div>
-            <span>선생님 출석</span>
-          </Link>
-        </li>
         <li className={`menu-item ${location.pathname === '/self-check' ? 'active' : ''}`}>
           <Link to="/self-check" className="menu-link" onClick={() => handleItemClick('self-check')}>
             <div className="menu-icon">✅</div>
             <span>셀프 출석</span>
           </Link>
         </li>
+        <li className={`menu-item ${location.pathname === '/teacher-attendance' ? 'active' : ''}`}>
+          <Link to="/teacher-attendance" className="menu-link" onClick={() => handleItemClick('teacher-attendance')}>
+            <div className="menu-icon">👨‍🏫</div>
+            <span>선생님 출석</span>
+          </Link>
+        </li>
+        
         <li className={`menu-item ${location.pathname === '/teacher-management' ? 'active' : ''}`}>
           <Link to="/teacher-management" className="menu-link" onClick={() => handleItemClick('teacher-management')}>
             <div className="menu-icon">👨‍🏫</div>
