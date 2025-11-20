@@ -39,6 +39,7 @@ const API_ENDPOINTS = {
     getByStudent: (studentId) => `${BASE_URL}/attendance/student/${studentId}`,
     create: `${BASE_URL}/attendance`,
     update: (studentId, date) => `${BASE_URL}/attendances/${studentId}/${date}`,
+    getHistoryByClassStudent: (classStudentId) => `${BASE_URL}/attendances/${classStudentId}`,
   },
 
   // 반 관련 API
@@ -92,7 +93,22 @@ const apiRequest = async (endpoint, options = {}) => {
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorData?.message || 'Unknown error'}`);
     }
 
-    const data = await response.json();
+    const contentLength = response.headers.get('content-length');
+    const isEmptyBody =
+      response.status === 204 ||
+      response.status === 205 ||
+      contentLength === '0';
+
+    if (isEmptyBody) {
+      return null;
+    }
+
+    const text = await response.text();
+    if (!text) {
+      return null;
+    }
+
+    const data = JSON.parse(text);
     console.log('API 응답:', data); // 디버깅용 로그
     return data;
   } catch (error) {

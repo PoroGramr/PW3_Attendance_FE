@@ -8,6 +8,7 @@ import TeacherManagement from './components/TeacherManagement';
 import AttendanceStats from './components/AttendanceStats';
 import InvitedFriendRegistration from './components/InvitedFriendRegistration';
 import InvitedFriendList from './components/InvitedFriendList';
+import SelfCheckAttendance from './components/SelfCheckAttendance';
 import Sidebar from './components/Sidebar';
 import CampaignPrayer from './components/CampaignPrayer';
 import './App.css';
@@ -44,6 +45,9 @@ const AppContent = () => {
       case 'teacher-management':
         navigate('/teacher-management');
         break;
+      case 'self-check':
+        navigate('/self-check');
+        break;
       case 'campaign':
         navigate('/campaign');
         break;
@@ -76,6 +80,7 @@ const AppContent = () => {
               onMenuSelect={handleMenuSelect} 
               activeItem={location.pathname === '/' ? 'students' : 
                          location.pathname === '/student-management' ? 'student-management' : 
+                         location.pathname === '/self-check' ? 'self-check' :
                          location.pathname === '/attendance-stats' ? 'attendance-stats' :
                          location.pathname === '/teacher-attendance' ? 'teacher-attendance' :
                          location.pathname === '/teacher-management' ? 'teacher-management' :
@@ -102,6 +107,7 @@ const AppContent = () => {
           <Route path="/teacher-management" element={<TeacherManagement />} />
           <Route path="/invited-friend-registration" element={<InvitedFriendRegistration />} />
           <Route path="/invited-friend-list" element={<InvitedFriendList />} />
+          <Route path="/self-check" element={<SelfCheckAttendance />} />
           <Route path="/campaign" element={<CampaignPrayer />} />
         </Routes>
       </div>

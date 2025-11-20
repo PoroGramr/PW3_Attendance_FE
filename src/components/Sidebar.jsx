@@ -53,6 +53,12 @@ const Sidebar = ({ onMenuSelect, activeItem, onClose }) => {
             <span>선생님 출석</span>
           </Link>
         </li>
+        <li className={`menu-item ${location.pathname === '/self-check' ? 'active' : ''}`}>
+          <Link to="/self-check" className="menu-link" onClick={() => handleItemClick('self-check')}>
+            <div className="menu-icon">✅</div>
+            <span>셀프 출석</span>
+          </Link>
+        </li>
         <li className={`menu-item ${location.pathname === '/teacher-management' ? 'active' : ''}`}>
           <Link to="/teacher-management" className="menu-link" onClick={() => handleItemClick('teacher-management')}>
             <div className="menu-icon">👨‍🏫</div>
