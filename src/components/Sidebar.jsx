@@ -72,6 +72,12 @@ const Sidebar = ({ onMenuSelect, activeItem, onClose }) => {
             <span>출석 통계</span>
           </Link>
         </li>
+        <li className={`menu-item ${location.pathname === '/monthly-student-list' ? 'active' : ''}`}>
+          <Link to="/monthly-student-list" className="menu-link" onClick={() => handleItemClick('monthly-student-list')}>
+            <div className="menu-icon">📅</div>
+            <span>월별 등록 학생</span>
+          </Link>
+        </li>
         <li className={`menu-item ${location.pathname === '/invited-friend-registration' ? 'active' : ''}`}>
           <Link to="/invited-friend-registration" className="menu-link" onClick={() => handleItemClick('invited-friend-registration')}>
             <div className="menu-icon">👋</div>

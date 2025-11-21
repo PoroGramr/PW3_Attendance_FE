@@ -14,6 +14,7 @@ const API_ENDPOINTS = {
     create: `${BASE_URL}/students`,
     update: (id) => `${BASE_URL}/students/${id}`,
     delete: (id) => `${BASE_URL}/students/${id}`,
+    getRegistrationsByYear: (year) => `${BASE_URL}/students/registrations/by-year/${year}`,
   },
 
   // 교사 관련 API

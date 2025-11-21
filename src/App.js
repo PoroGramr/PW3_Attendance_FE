@@ -9,6 +9,7 @@ import AttendanceStats from './components/AttendanceStats';
 import InvitedFriendRegistration from './components/InvitedFriendRegistration';
 import InvitedFriendList from './components/InvitedFriendList';
 import SelfCheckAttendance from './components/SelfCheckAttendance';
+import MonthlyStudentList from './components/MonthlyStudentList';
 import Sidebar from './components/Sidebar';
 import CampaignPrayer from './components/CampaignPrayer';
 import './App.css';
@@ -57,6 +58,9 @@ const AppContent = () => {
       case 'invited-friend-list':
         navigate('/invited-friend-list');
         break;
+      case 'monthly-student-list':
+        navigate('/monthly-student-list');
+        break;
       default:
         navigate('/');
     }
@@ -86,6 +90,7 @@ const AppContent = () => {
                          location.pathname === '/teacher-management' ? 'teacher-management' :
                          location.pathname === '/invited-friend-registration' ? 'invited-friend-registration' :
                          location.pathname === '/invited-friend-list' ? 'invited-friend-list' :
+                         location.pathname === '/monthly-student-list' ? 'monthly-student-list' :
                          location.pathname === '/campaign' ? 'campaign' : 'attendance'} 
               onClose={() => setSidebarOpen(false)}
             />
@@ -108,6 +113,7 @@ const AppContent = () => {
           <Route path="/invited-friend-registration" element={<InvitedFriendRegistration />} />
           <Route path="/invited-friend-list" element={<InvitedFriendList />} />
           <Route path="/self-check" element={<SelfCheckAttendance />} />
+          <Route path="/monthly-student-list" element={<MonthlyStudentList />} />
           <Route path="/campaign" element={<CampaignPrayer />} />
         </Routes>
       </div>
