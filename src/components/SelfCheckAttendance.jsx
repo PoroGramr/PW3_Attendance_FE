@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { API_ENDPOINTS, apiRequest } from '../api/api';
+import searchIcon from './assets/search.png';
 import './SelfCheckAttendance.css';
 
 const CURRENT_YEAR = 2025;
@@ -170,15 +171,19 @@ const SelfCheckAttendance = () => {
       </div>
 
       <div className="self-check-search">
-        <label htmlFor="self-check-input" className="search-label">이름 검색</label>
-        <input
-          id="self-check-input"
-          type="text"
-          placeholder="예: 김이든"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          autoComplete="off"
-        />
+        <div className="search-input-wrapper">
+          <input
+            id="self-check-input"
+            type="text"
+            placeholder="이름을 입력하세요"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            autoComplete="off"
+          />
+          <button className="search-button" aria-label="검색">
+            <img src={searchIcon} alt="검색 아이콘" />
+          </button>
+        </div>
       </div>
 
       {message && <div className="self-check-toast">{message}</div>}
@@ -267,4 +272,3 @@ const SelfCheckAttendance = () => {
 };
 
 export default SelfCheckAttendance;
-

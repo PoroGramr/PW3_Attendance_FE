@@ -30,14 +30,47 @@
   font-size: 1.2rem;
 }
 
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .self-check-search input {
+  flex-grow: 1;
   padding: 16px 18px;
+  padding-right: 60px; /* 버튼 공간 확보 */
   border: 2px solid #2563eb;
   border-radius: 12px;
   font-size: 1.3rem;
   text-align: center;
   font-weight: 600;
   box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #628ae2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button img {
+  width: 28px;
+  height: 28px;
 }
 
 .self-check-toast {
