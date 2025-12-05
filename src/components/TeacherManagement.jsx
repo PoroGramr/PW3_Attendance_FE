@@ -96,6 +96,22 @@ const TeacherManagement = () => {
     }
   };
 
+  const handleDeleteTeacher = async (teacherId) => {
+    if (window.confirm('정말로 이 선생님을 삭제하시겠습니까?')) {
+      try {
+        await apiRequest(API_ENDPOINTS.teachers.delete(teacherId), {
+          method: 'DELETE'
+        });
+        // 성공 시 목록 새로고침
+        await fetchTeachers();
+      } catch (err) {
+        console.error('선생님 삭제 중 오류 발생:', err);
+        setError('선생님 삭제 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
+
   const filteredTeachers = teachers.filter(teacher =>
     teacher.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -148,7 +164,7 @@ const TeacherManagement = () => {
                     <button className="btn-edit">
                       <span className="icon">✏️</span>
                     </button>
-                    <button className="btn-delete">
+                    <button className="btn-delete" onClick={() => handleDeleteTeacher(teacher.id)}>
                       <span className="icon">🗑️</span>
                     </button>
                     <button className="btn-match" onClick={() => openMatchModal(teacher)}>
