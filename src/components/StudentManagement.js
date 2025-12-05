@@ -57,10 +57,16 @@ const StudentManagement = () => {
   const handleDeleteStudent = async (studentId) => {
     if (window.confirm('정말로 이 학생을 삭제하시겠습니까?')) {
       try {
+        // DELETE 요청은 성공 시 별도의 content를 반환하지 않을 수 있습니다.
+        // apiRequest가 에러를 throw하지 않으면 성공으로 간주합니다.
         await apiRequest(API_ENDPOINTS.students.delete(studentId), {
           method: 'DELETE'
         });
-        fetchStudents();
+        
+        setError(null);
+        fetchStudents().catch(err => {
+          console.error("Failed to refetch students after deletion:", err);
+        });
       } catch (err) {
         setError('학생 삭제에 실패했습니다.');
       }

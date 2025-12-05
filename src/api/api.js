@@ -94,23 +94,20 @@ const apiRequest = async (endpoint, options = {}) => {
       throw new Error(`HTTP error! status: ${response.status}, message: ${errorData?.message || 'Unknown error'}`);
     }
 
-    const contentLength = response.headers.get('content-length');
-    const isEmptyBody =
-      response.status === 204 ||
-      response.status === 205 ||
-      contentLength === '0';
-
-    if (isEmptyBody) {
-      return null;
+    // 204 No Content 응답은 본문이 없으므로 null 반환
+    if (response.status === 204) {
+      return null; 
     }
 
-    const text = await response.text();
-    if (!text) {
-      return null;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const data = await response.json();
+      console.log('API 응답 (JSON):', data); // 디버깅용 로그
+      return data;
     }
-
-    const data = JSON.parse(text);
-    console.log('API 응답:', data); // 디버깅용 로그
+    
+    const data = await response.text();
+    console.log('API 응답 (Text):', data); // 디버깅용 로그
     return data;
   } catch (error) {
     console.error('API 요청 중 에러 발생:', error);
