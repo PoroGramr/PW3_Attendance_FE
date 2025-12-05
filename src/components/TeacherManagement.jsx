@@ -161,9 +161,9 @@ const TeacherManagement = () => {
                 </td>
                 <td>
                   <div className="action-buttons">
-                    <button className="btn-edit">
+                    {/* <button className="btn-edit">
                       <span className="icon">✏️</span>
-                    </button>
+                    </button> */}
                     <button className="btn-delete" onClick={() => handleDeleteTeacher(teacher.id)}>
                       <span className="icon">🗑️</span>
                     </button>
