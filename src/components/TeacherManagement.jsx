@@ -138,44 +138,61 @@ const TeacherManagement = () => {
       </div>
 
       <div className="teachers-list">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>이름</th>
-              <th>연락처</th>
-              <th>상태</th>
-              <th>관리</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredTeachers.map(teacher => (
-              <tr key={teacher.id}>
-                <td>{teacher.id}</td>
-                <td>{teacher.name}</td>
-                <td>{teacher.number}</td>
-                <td>
-                  <span className={`status-badge ${teacher.status.toLowerCase()}`}>
-                    {teacher.status === 'ACTIVE' ? '활성' : '비활성'}
-                  </span>
-                </td>
-                <td>
-                  <div className="action-buttons">
-                    {/* <button className="btn-edit">
-                      <span className="icon">✏️</span>
-                    </button> */}
-                    <button className="btn-delete" onClick={() => handleDeleteTeacher(teacher.id)}>
-                      <span className="icon">🗑️</span>
-                    </button>
-                    <button className="btn-match" onClick={() => openMatchModal(teacher)}>
-                      <span className="icon">🔗</span> 반 매칭
-                    </button>
-                  </div>
-                </td>
+        <div className="teacher-table-desktop">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>이름</th>
+                <th>연락처</th>
+                <th>상태</th>
+                <th>관리</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredTeachers.map(teacher => (
+                <tr key={teacher.id}>
+                  <td>{teacher.id}</td>
+                  <td>{teacher.name}</td>
+                  <td>{teacher.number}</td>
+                  <td>
+                    <span className={`status-badge ${teacher.status.toLowerCase()}`}>
+                      {teacher.status === 'ACTIVE' ? '활성' : '비활성'}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="action-buttons">
+                      <button className="btn-delete" onClick={() => handleDeleteTeacher(teacher.id)}>
+                        <span className="icon">🗑️</span>
+                      </button>
+                      <button className="btn-match" onClick={() => openMatchModal(teacher)}>
+                        <span className="icon">🔗</span> 반 매칭
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="teacher-cards-mobile">
+          {filteredTeachers.map(teacher => (
+            <div key={teacher.id} className="teacher-card">
+              <div className="teacher-card-header">
+                <span className="teacher-name">{teacher.name}</span>
+                <span className={`status-badge ${teacher.status.toLowerCase()}`}>{teacher.status === 'ACTIVE' ? '활성' : '비활성'}</span>
+              </div>
+              <div className="teacher-card-body">
+                <p><strong>ID:</strong> {teacher.id}</p>
+                <p><strong>연락처:</strong> {teacher.number}</p>
+              </div>
+              <div className="teacher-card-footer action-buttons">
+                <button className="btn-delete" onClick={() => handleDeleteTeacher(teacher.id)}><span className="icon">🗑️</span> 삭제</button>
+                <button className="btn-match" onClick={() => openMatchModal(teacher)}><span className="icon">🔗</span> 반 매칭</button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {isMatchModalOpen && ReactDOM.createPortal(

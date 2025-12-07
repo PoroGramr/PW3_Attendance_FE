@@ -217,3 +217,75 @@ th {
     border-radius: 10px;
   }
 }
+
+/* 데스크톱/모바일 뷰 전환을 위한 스타일 */
+.teacher-table-desktop {
+  overflow-x: auto;
+}
+
+.teacher-cards-mobile {
+  display: none; /* 기본적으로 모바일 카드는 숨김 */
+}
+
+/* 반응형 디자인: 모바일 화면에서 카드 UI 활성화 */
+@media (max-width: 768px) {
+  .teacher-management-container {
+    padding: 10px;
+  }
+
+  .header .controls {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .header .search-input,
+  .header .btn-add {
+    width: 100%;
+  }
+
+  .teacher-table-desktop {
+    display: none; /* 데스크톱용 테이블 숨김 */
+  }
+
+  .teacher-cards-mobile {
+    display: block; /* 모바일용 카드 보임 */
+  }
+
+  .teacher-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .teacher-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .teacher-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .teacher-card-body {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 15px;
+  }
+
+  .teacher-card-body p {
+    margin: 4px 0;
+  }
+
+  .teacher-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}
