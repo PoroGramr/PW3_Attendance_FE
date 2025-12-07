@@ -106,52 +106,71 @@ const StudentManagement = () => {
       </div>
 
       <div className="student-list">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>이름</th>
-              <th>생년월일</th>
-              <th>전화번호</th>
-              <th>학년도</th>
-              <th>반</th>
-              <th>작업</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student) => (
-              <tr key={student.id}>
-                <td>{student.id}</td>
-                <td>{student.name}</td>
-                <td>{student.birth || '-'}</td>
-                <td>{student.phone || '-'}</td>
-                <td>{student.schoolYear || '-'}</td>
-                <td>{getClassName(student.classRoomId)}</td>
-                <td>
-                  <div className="action-buttons">
-                    {!student.classRoomId && (
-                      <button
-                        className="assign-button"
-                        onClick={() => {
-                          setSelectedStudent(student);
-                          setShowAssignClassModal(true);
-                        }}
-                      >
-                        반 배정
-                      </button>
-                    )}
-                    <button
-                      className="delete-button"
-                      onClick={() => handleDeleteStudent(student.id)}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                </td>
+        <div className="student-table-desktop">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>이름</th>
+                <th>생년월일</th>
+                <th>전화번호</th>
+                <th>학년도</th>
+                <th>반</th>
+                <th>작업</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student.id}>
+                  <td>{student.id}</td>
+                  <td>{student.name}</td>
+                  <td>{student.birth || '-'}</td>
+                  <td>{student.phone || '-'}</td>
+                  <td>{student.schoolYear || '-'}</td>
+                  <td>{getClassName(student.classRoomId)}</td>
+                  <td>
+                    <div className="action-buttons">
+                      {!student.classRoomId && (
+                        <button className="assign-button" onClick={() => { setSelectedStudent(student); setShowAssignClassModal(true); }}>
+                          반 배정
+                        </button>
+                      )}
+                      <button className="delete-button" onClick={() => handleDeleteStudent(student.id)}>
+                        삭제
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="student-cards-mobile">
+          {students.map((student) => (
+            <div key={student.id} className="student-card">
+              <div className="student-card-header">
+                <span className="student-name">{student.name}</span>
+                <span className="student-id">ID: {student.id}</span>
+              </div>
+              <div className="student-info">
+                <div className="info-item"><span className="info-label">생년월일</span><span className="info-value">{student.birth || '-'}</span></div>
+                <div className="info-item"><span className="info-label">전화번호</span><span className="info-value">{student.phone || '-'}</span></div>
+                <div className="info-item"><span className="info-label">학년도</span><span className="info-value">{student.schoolYear || '-'}</span></div>
+                <div className="info-item"><span className="info-label">반</span><span className="info-value">{getClassName(student.classRoomId)}</span></div>
+              </div>
+              <div className="student-actions">
+                {!student.classRoomId && (
+                  <button className="assign-button" onClick={() => { setSelectedStudent(student); setShowAssignClassModal(true); }}>
+                    반 배정
+                  </button>
+                )}
+                <button className="delete-button" onClick={() => handleDeleteStudent(student.id)}>
+                  삭제
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {showAddModal && (
