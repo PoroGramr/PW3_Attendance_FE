@@ -1,6 +1,7 @@
 // API 기본 URL 설정
-const BASE_URL = 'https://pw3api.porogramr.site';
+// const BASE_URL = 'https://pw3api.porogramr.site'; 
 // const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://pw3hubapi.porogramr.site';
 
 // API 엔드포인트 객체
 const API_ENDPOINTS = {
@@ -41,6 +42,7 @@ const API_ENDPOINTS = {
     create: `${BASE_URL}/attendance`,
     update: (studentId, date) => `${BASE_URL}/attendances/${studentId}/${date}`,
     getHistoryByClassStudent: (classStudentId) => `${BASE_URL}/attendances/${classStudentId}`,
+    checkByQr: () => `${BASE_URL}/attendances/scan`, // QR 출석 체크 엔드포인트
   },
 
   // 반 관련 API

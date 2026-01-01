@@ -78,6 +78,12 @@ const Sidebar = ({ onMenuSelect, activeItem, onClose }) => {
             <span>월별 등록 학생</span>
           </Link>
         </li>
+        <li className={`menu-item ${location.pathname === '/qr-attendance' ? 'active' : ''}`}>
+          <Link to="/qr-attendance" className="menu-link" onClick={() => handleItemClick('qr-attendance')}>
+            <div className="menu-icon">📱</div>
+            <span>QR 출석</span>
+          </Link>
+        </li>
       
       </ul>
     

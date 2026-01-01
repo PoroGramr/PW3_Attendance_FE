@@ -12,6 +12,7 @@ import SelfCheckAttendance from './components/SelfCheckAttendance';
 import MonthlyStudentList from './components/MonthlyStudentList';
 import Sidebar from './components/Sidebar';
 import CampaignPrayer from './components/CampaignPrayer';
+import QrAttendance from './components/QrAttendance'; // QrAttendance 컴포넌트 import
 import './App.css';
 
 const AppContent = () => {
@@ -61,6 +62,9 @@ const AppContent = () => {
       case 'monthly-student-list':
         navigate('/monthly-student-list');
         break;
+      case 'qr-attendance': // QR 출석 메뉴 핸들러 추가
+        navigate('/qr-attendance');
+        break;
       default:
         navigate('/');
     }
@@ -91,6 +95,7 @@ const AppContent = () => {
                          location.pathname === '/invited-friend-registration' ? 'invited-friend-registration' :
                          location.pathname === '/invited-friend-list' ? 'invited-friend-list' :
                          location.pathname === '/monthly-student-list' ? 'monthly-student-list' :
+                         location.pathname === '/qr-attendance' ? 'qr-attendance' :
                          location.pathname === '/campaign' ? 'campaign' : 'attendance'} 
               onClose={() => setSidebarOpen(false)}
             />
@@ -115,6 +120,7 @@ const AppContent = () => {
           <Route path="/self-check" element={<SelfCheckAttendance />} />
           <Route path="/monthly-student-list" element={<MonthlyStudentList />} />
           <Route path="/campaign" element={<CampaignPrayer />} />
+          <Route path="/qr-attendance" element={<QrAttendance />} /> {/* QR 출석 라우트 추가 */}
         </Routes>
       </div>
     </div>
